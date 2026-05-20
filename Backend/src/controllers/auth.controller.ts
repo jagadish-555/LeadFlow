@@ -111,16 +111,8 @@ export const login: RequestHandler = async (req, res) => {
 }
 
 export const getMe: RequestHandler = async (req, res) => {
-  if (!req.user) {
-    return res.status(401).json({
-      error: {
-        message: 'Unauthorized',
-      },
-    })
-  }
-
   const user = await prisma.user.findUnique({
-    where: { id: req.user.id },
+    where: { id: req.user!.id },
     select: {
       id: true,
       name: true,

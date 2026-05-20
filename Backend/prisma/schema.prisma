@@ -29,8 +29,6 @@ model User {
   name         String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-
-  @@index([email])
 }
 
 model Lead {
