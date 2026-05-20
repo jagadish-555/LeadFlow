@@ -9,21 +9,13 @@ export const createLeadSchema = z.object({
   status: statusEnum.optional().default('New'),
 })
 
-export const updateLeadSchema = z
-  .object({
-    name: z.string().min(1).max(100).optional(),
-    company: z.string().max(100).nullable().optional(),
-    phone: z.string().max(20).nullable().optional(),
-    status: statusEnum.optional(),
-    followUpAt: z.iso.datetime().nullable().optional(),
-  })
-  .refine((data) => Object.keys(data).length > 0, {
-    message: 'At least one field must be provided',
-  })
-
 export const createDiscussionSchema = z.object({
   note: z.string({ error: 'Note is required' }).max(2000),
-  followUpAt: z.iso.datetime().nullable().optional(),
+  followUpAt: z.preprocess(
+    (val) => (val === '' ? null : val),
+    z.iso.datetime().nullable().optional()
+  ),
+  status: statusEnum.optional(),
 })
 
 export const leadQuerySchema = z.object({
