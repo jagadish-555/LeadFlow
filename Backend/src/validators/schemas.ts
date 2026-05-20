@@ -1,13 +1,6 @@
 import { z } from 'zod'
 
-const statusEnum = z.enum([
-  'New',
-  'Contacted',
-  'Qualified',
-  'Proposal_Sent',
-  'Won',
-  'Lost',
-])
+const statusEnum = z.enum(['New', 'Contacted', 'Qualified', 'Proposal_Sent', 'Won', 'Lost'])
 
 export const createLeadSchema = z.object({
   name: z.string().min(1, 'Name is required').max(100),
