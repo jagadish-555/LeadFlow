@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import useRedirectIfAuthenticated from '../lib/useRedirectIfAuthenticated'
+import AppLogo from '../components/AppLogo'
 
 const SignupPage = () => {
   const [name, setName] = useState('')
@@ -26,20 +27,17 @@ const SignupPage = () => {
 
     try {
       await signUp({ name, email, password })
-      setLoading(false)
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Unable to sign up'
-      setError(message)
+      setError(err instanceof Error ? err.message : 'Unable to sign up')
+    } finally {
       setLoading(false)
     }
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
+    <main className="min-h-screen bg-slate-50 flex items-center justify-center px-4 py-12">
       <section className="w-full max-w-[420px] rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-card sm:p-10">
-        <div className="inline-flex items-center gap-2 text-[20px] font-bold text-blue-600 tracking-tight">
-          ↗ LeadFlow
-        </div>
+        <AppLogo />
         <h1 className="mt-5 text-[28px] font-semibold text-slate-900">Create your account</h1>
         <p className="mb-7 mt-1 text-sm text-slate-500">
           Start tracking your leads in minutes
