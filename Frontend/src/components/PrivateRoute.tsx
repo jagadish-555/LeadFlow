@@ -7,7 +7,7 @@ const PrivateRoute = () => {
   if (status === 'loading') {
     return (
       <div
-        className="min-h-screen bg-gray-50 flex items-center justify-center gap-3 text-sm text-slate-500"
+      className="min-h-screen bg-slate-50 flex items-center justify-center gap-3 text-sm text-slate-500"
         role="status"
         aria-live="polite"
       >

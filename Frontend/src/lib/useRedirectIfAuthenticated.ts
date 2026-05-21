@@ -10,7 +10,7 @@ const useRedirectIfAuthenticated = () => {
     if (status === 'authenticated') {
       navigate('/', { replace: true })
     }
-  }, [status]) 
+  }, [status, navigate])
 }
 
 export default useRedirectIfAuthenticated
