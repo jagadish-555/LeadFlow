@@ -27,6 +27,7 @@ model User {
   email        String   @unique
   passwordHash String
   name         String
+  leads        Lead[]
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
@@ -38,10 +39,13 @@ model Lead {
   phone       String?
   status      Status       @default(New)
   followUpAt  DateTime?
+  userId      Int
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   discussions Discussion[]
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 
+  @@index([userId])
   @@index([status])
   @@index([followUpAt])
   @@index([name])

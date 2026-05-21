@@ -15,9 +15,20 @@ export const createDiscussion = async (
       return
     }
 
-    const lead = await prisma.lead.findUnique({ where: { id: leadId }, select: { id: true } })
+    const userId = req.user!.id
+
+    const lead = await prisma.lead.findUnique({
+      where: { id: leadId },
+      select: { id: true, userId: true },
+    })
+
     if (!lead) {
       res.status(404).json({ error: 'Lead not found' })
+      return
+    }
+
+    if (lead.userId !== userId) {
+      res.status(403).json({ error: 'You do not have access to this lead' })
       return
     }
 

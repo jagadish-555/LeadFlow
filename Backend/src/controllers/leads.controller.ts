@@ -13,9 +13,11 @@ export const getLeads = async (req: Request, res: Response, next: NextFunction):
     }
 
     const { status, search } = query.data
+    const userId = req.user!.id
 
     const leads = await prisma.lead.findMany({
       where: {
+        userId,
         ...(status ? { status } : {}),
         ...(search ? { name: { contains: search, mode: 'insensitive' } } : {}),
       },
@@ -48,9 +50,20 @@ export const getLeadById = async (
       return
     }
 
+    const userId = req.user!.id
+
     const lead = await prisma.lead.findUnique({
       where: { id },
-      include: {
+      select: {
+        id: true,
+        name: true,
+        company: true,
+        phone: true,
+        status: true,
+        followUpAt: true,
+        createdAt: true,
+        updatedAt: true,
+        userId: true,
         discussions: {
           orderBy: { createdAt: 'desc' },
         },
@@ -59,6 +72,11 @@ export const getLeadById = async (
 
     if (!lead) {
       res.status(404).json({ error: 'Lead not found' })
+      return
+    }
+
+    if (lead.userId !== userId) {
+      res.status(403).json({ error: 'You do not have access to this lead' })
       return
     }
 
@@ -76,9 +94,16 @@ export const createLead = async (
 ): Promise<void> => {
   try {
     const { name, company, phone, status } = req.body
+    const userId = req.user!.id
 
     const lead = await prisma.lead.create({
-      data: { name, company, phone, status },
+      data: {
+        name,
+        company,
+        phone,
+        status,
+        userId,
+      },
       include: {
         discussions: true,
       },
@@ -100,9 +125,11 @@ export const getTodayFollowUps = async (
     const now = new Date()
     const startOfTodayUtc = startOfDay(now)
     const endOfTodayUtc = endOfDay(now)
+    const userId = req.user!.id
 
     const leads = await prisma.lead.findMany({
       where: {
+        userId,
         followUpAt: {
           gte: startOfTodayUtc,
           lte: endOfTodayUtc,
