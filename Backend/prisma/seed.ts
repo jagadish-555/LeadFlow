@@ -5,15 +5,18 @@ import prisma from '../src/db/prisma'
 async function seed() {
   console.log('Seeding database...')
 
+  // ── Demo User (full data walkthrough / guest login) ───────────────────────
   const passwordHash = await bcrypt.hash('password123', 12)
-  const demoUser = await prisma.user.create({
-    data: {
+  const demoUser = await prisma.user.upsert({
+    where: { email: 'demo@leadflow.dev' },
+    update: {},
+    create: {
       name: 'Demo User',
       email: 'demo@leadflow.dev',
       passwordHash,
     },
   })
-  console.log(`  Created user: ${demoUser.email}  (password: password123)`)
+  console.log(`  Upserted user: ${demoUser.email}  (password: password123)`)
 
   const userId = demoUser.id
 
@@ -181,7 +184,7 @@ async function seed() {
   console.log(`  Created lead: ${lead6.name}`)
 
   console.log('\nSeeding complete!')
-  console.log('  Demo login → email: demo@leadflow.dev  |  password: password123')
+  console.log('  Demo / Guest login  → email: demo@leadflow.dev  |  password: password123')
 }
 
 seed()
