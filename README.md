@@ -34,7 +34,7 @@ LeadFlow/
 │   ├── prisma/
 │   │   ├── migrations/         # Prisma migration history
 │   │   ├── schema.prisma       # Database schema (User, Lead, Discussion)
-│   │   └── seed.ts             # Seeds guest + demo users with sample leads
+│   │   └── seed.ts             # Seeds guest user with sample leads
 │   ├── src/
 │   │   ├── controllers/
 │   │   │   ├── auth.controller.ts
@@ -80,7 +80,7 @@ LeadFlow/
 │   │   ├── context/
 │   │   │   └── AuthContext.tsx  # Auth state (user, token, login/logout)
 │   │   ├── lib/
-│   │   │   ├── apiClient.ts     # Axios/fetch base client with auth headers
+│   │   │   ├── apiClient.ts     # fetch base client with auth headers
 │   │   │   ├── authApi.ts       # Auth API calls (login, register)
 │   │   │   ├── authStorage.ts   # Token persistence (localStorage)
 │   │   │   ├── date.ts          # Date formatting helpers
@@ -211,9 +211,9 @@ npm run dev
 |---------------------|-----------------------------------------------------------------------|--------------------------------------------------------|
 | `npm run dev`       | `ts-node-dev --files src/index.ts`                                   | Development server with hot reload                     |
 | `npm run build`     | `tsc`                                                                 | Compile TypeScript to JavaScript                       |
-| `npm run build:prod`| `prisma migrate deploy && prisma generate && ts-node prisma/seed.ts && tsc` | Full production build (migrate + generate + seed + compile) |
+| `npm run build:prod`| `npx prisma migrate deploy && npx prisma generate && npx tsx prisma/seed.ts && npx tsc` | Full production build (migrate + generate + seed + compile) |
 | `npm run start`     | `node dist/index.js`                                                  | Run the compiled production server                     |
-| `npm run seed`      | `ts-node prisma/seed.ts`                                              | Seed guest + demo users                                |
+| `npm run seed`      | `npx tsx prisma/seed.ts`                                              | Seed demo user with sample data                        |
 | `npm run db:migrate`| `prisma migrate dev`                                                  | Apply migrations in development                        |
 | `npm run db:seed`   | `ts-node-dev prisma/seed.ts`                                          | Seed using ts-node-dev (dev only)                      |
 | `npm run db:studio` | `prisma studio`                                                       | Open Prisma Studio (DB GUI)                            |
@@ -235,7 +235,7 @@ The seed script (`npm run seed`) automatically creates the demo account used for
 
 | Account      | Email                  | Password     | Description                          |
 |--------------|------------------------|--------------|--------------------------------------|
-| Demo / Guest | `demo@leadflow.dev`    | `password123`| Pre-loaded with 6 sample leads       |
+| Demo  | `demo@leadflow.dev`    | `password123`| Pre-loaded with 6 sample leads       |
 
 > [!WARNING]
 > **Seeding is Mandatory for Guest Login**: If you do not run the seed script (`npm run seed`), the "Guest Login" button on the frontend will fail because the `demo@leadflow.dev` user won't exist in your database. 

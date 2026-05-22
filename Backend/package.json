@@ -5,9 +5,9 @@
   "scripts": {
     "dev": "ts-node-dev --files src/index.ts",
     "build": "tsc",
-    "build:prod": "prisma migrate deploy && prisma generate && ts-node prisma/seed.ts && tsc",
+    "build:prod": "npx prisma migrate deploy && npx prisma generate && npx tsx prisma/seed.ts && npx tsc",
     "start": "node dist/index.js",
-    "seed": "ts-node prisma/seed.ts",
+    "seed": "npx tsx prisma/seed.ts",
     "db:migrate": "prisma migrate dev",
     "db:seed": "ts-node-dev prisma/seed.ts",
     "db:studio": "prisma studio",
@@ -19,6 +19,12 @@
   "dependencies": {
     "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.8.0",
+    "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/node": "^25.9.1",
+    "@types/pg": "^8.20.0",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.6",
     "date-fns": "^4.2.1",
@@ -26,21 +32,15 @@
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.21.0",
+    "prisma": "^7.8.0",
+    "typescript": "^6.0.3",
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.2",
-    "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.6",
-    "@types/jsonwebtoken": "^9.0.6",
-    "@types/node": "^25.9.1",
-    "@types/pg": "^8.20.0",
     "prettier": "^3.8.3",
-    "prisma": "^7.8.0",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^6.0.3"
+    "ts-node-dev": "^2.0.0"
   },
   "prisma": {
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "npx tsx prisma/seed.ts"
   }
 }
