@@ -5,7 +5,7 @@ import prisma from '../src/db/prisma'
 async function seed() {
   console.log('Seeding database...')
 
-  // ── Demo User (full data walkthrough / guest login) ───────────────────────
+
   const passwordHash = await bcrypt.hash('password123', 12)
   const demoUser = await prisma.user.upsert({
     where: { email: 'demo@leadflow.dev' },
@@ -19,6 +19,10 @@ async function seed() {
   console.log(`  Upserted user: ${demoUser.email}  (password: password123)`)
 
   const userId = demoUser.id
+
+
+  const deleted = await prisma.lead.deleteMany({ where: { userId } })
+  console.log(`  Deleted ${deleted.count} existing lead(s) for demo user`)
 
   const now = new Date()
   const hoursAgo = (h: number) => new Date(now.getTime() - h * 60 * 60 * 1000)
